@@ -8,6 +8,7 @@ using System.Windows.Input;
 using ReactiveUI;
 using DotNetEnv;
 using WeatherApp.Models;
+using Avalonia.Threading; // Add this using statement
 
 namespace WeatherApp.ViewModels
 {
@@ -67,25 +68,28 @@ namespace WeatherApp.ViewModels
             _client = new HttpClient();
             Env.Load();
 
-            // Initialize commands
-            SearchCommand = ReactiveCommand.CreateFromTask(SearchWeatherAsync);
-            RefreshCommand = ReactiveCommand.CreateFromTask(async () =>
-                {
-                    if (!string.IsNullOrEmpty(CityName))
-                        await SearchWeatherAsync();
-                });
+            // Initialize commands correctly
+            var canExecute = this.WhenAnyValue(x => x.CityName,
+                cityName => !string.IsNullOrEmpty(cityName));
+
+            SearchCommand = ReactiveCommand.CreateFromTask(SearchWeatherAsync, canExecute);
+            RefreshCommand = ReactiveCommand.CreateFromTask(SearchWeatherAsync, canExecute);
         }
 
         private async Task SearchWeatherAsync()
         {
             if (string.IsNullOrWhiteSpace(CityName))
             {
-                ErrorMessage = "Please enter a city name";
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                    ErrorMessage = "Please enter a city name");
                 return;
             }
 
-            IsLoading = true;
-            ErrorMessage = "";
+            await Dispatcher.UIThread.InvokeAsync(() =>
+            {
+                IsLoading = true;
+                ErrorMessage = "";
+            });
 
             try
             {
@@ -106,6 +110,10 @@ namespace WeatherApp.ViewModels
                 var json = await response.Content.ReadAsStringAsync();
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var weather = JsonSerializer.Deserialize<WeatherInfo>(json, options);
+                if (weather?.Main == null)
+                {
+                    throw new Exception("Invalid weather data received");
+                }
 
                 Temperature = $"{weather.Main.Temp:F1}°C";
                 Humidity = $"{weather.Main.Humidity}%";
@@ -150,11 +158,13 @@ namespace WeatherApp.ViewModels
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"An error occurred: {ex.Message}";
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                    ErrorMessage = $"An error occurred: {ex.Message}");
             }
             finally
             {
-                IsLoading = false;
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                    IsLoading = false);
             }
         }
     }
