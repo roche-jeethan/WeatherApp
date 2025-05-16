@@ -167,9 +167,9 @@ namespace WeatherApp.ViewModels
                 {
                     Location = $"{weather.Name}, {weather.Sys.Country}";
                     Temperature = $"{weather.Main.Temp:F1}°C";
-                    Humidity = $"{weather.Main.Humidity}%";
+                    Humidity = $"Humidity: {weather.Main.Humidity}%";
                     TempRange = $"Min: {weather.Main.TempMin:F1}°C • Max: {weather.Main.TempMax:F1}°C";
-                    Description = $"{weather.Weather[0].Description}";
+                    Description = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(weather.Weather[0].Description);
                     Wind = $"Wind: {weather.Wind.Speed:F1} m/s";
                     Pressure = $"Pressure: {weather.Main.Pressure} hPa";
 
