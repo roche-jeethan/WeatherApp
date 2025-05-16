@@ -15,8 +15,8 @@
         <conv:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter"/>
     </Window.Resources>
 
-    <Grid RowDefinitions="Auto,*" Margin="20">
-        <!-- Search Bar (without Refresh Button) -->
+    <Grid RowDefinitions="Auto,Auto,*" Margin="20">
+        <!-- Search Bar -->
         <Grid Grid.Row="0" ColumnDefinitions="*" Margin="0,0,0,20">
             <TextBox Grid.Column="0"
                      Text="{Binding CityName}"
@@ -28,8 +28,16 @@
             </TextBox>
         </Grid>
 
+        <!-- Location Display -->
+        <TextBlock Grid.Row="1" 
+                   Text="{Binding Location}"
+                   FontSize="28"
+                   FontWeight="SemiBold"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,20"/>
+
         <!-- Weather Information -->
-        <Border Grid.Row="1"
+        <Border Grid.Row="2"
                 BorderBrush="Gray"
                 BorderThickness="1"
                 CornerRadius="8"

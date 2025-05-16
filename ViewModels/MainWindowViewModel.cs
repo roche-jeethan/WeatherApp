@@ -96,6 +96,16 @@ namespace WeatherApp.ViewModels
             private set => this.RaiseAndSetIfChanged(ref _pressure, value);
         }
 
+        // Add these new fields
+        private string _location = "--";
+
+        // Add this new property
+        public string Location
+        {
+            get => _location;
+            private set => this.RaiseAndSetIfChanged(ref _location, value);
+        }
+
         // Commands
         public ICommand SearchCommand { get; }
         public ICommand RefreshCommand { get; }
@@ -155,6 +165,7 @@ namespace WeatherApp.ViewModels
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
+                    Location = $"{weather.Name}, {weather.Sys.Country}";
                     Temperature = $"{weather.Main.Temp:F1}°C";
                     Humidity = $"{weather.Main.Humidity}%";
                     TempRange = $"Min: {weather.Main.TempMin:F1}°C • Max: {weather.Main.TempMax:F1}°C";
