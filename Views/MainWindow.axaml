@@ -9,7 +9,7 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="Weather App"
-        Width="500" Height="450">
+        Width="500" Height="600">
 
     <Window.Resources>
         <conv:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmptyConverter"/>
