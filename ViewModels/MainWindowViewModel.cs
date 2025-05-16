@@ -59,6 +59,43 @@ namespace WeatherApp.ViewModels
             private set => this.RaiseAndSetIfChanged(ref _errorMessage, value);
         }
 
+        // New properties for additional weather information
+        private string _description = "--";
+        private string _tempRange = "--";
+        private string _wind = "--";
+        private string _sunTimes = "--";
+        private string _pressure = "--";
+
+        public string Description
+        {
+            get => _description;
+            private set => this.RaiseAndSetIfChanged(ref _description, value);
+        }
+
+        public string TempRange
+        {
+            get => _tempRange;
+            private set => this.RaiseAndSetIfChanged(ref _tempRange, value);
+        }
+
+        public string Wind
+        {
+            get => _wind;
+            private set => this.RaiseAndSetIfChanged(ref _wind, value);
+        }
+
+        public string SunTimes
+        {
+            get => _sunTimes;
+            private set => this.RaiseAndSetIfChanged(ref _sunTimes, value);
+        }
+
+        public string Pressure
+        {
+            get => _pressure;
+            private set => this.RaiseAndSetIfChanged(ref _pressure, value);
+        }
+
         // Commands
         public ICommand SearchCommand { get; }
         public ICommand RefreshCommand { get; }
@@ -110,13 +147,26 @@ namespace WeatherApp.ViewModels
                 var json = await response.Content.ReadAsStringAsync();
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
                 var weather = JsonSerializer.Deserialize<WeatherInfo>(json, options);
-                if (weather?.Main == null)
+                Console.WriteLine($"Weather Data: \n {json}");
+                if (weather?.Main == null || weather.Weather.Count == 0)
                 {
                     throw new Exception("Invalid weather data received");
                 }
 
-                Temperature = $"{weather.Main.Temp:F1}°C";
-                Humidity = $"{weather.Main.Humidity}%";
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    Temperature = $"{weather.Main.Temp:F1}°C";
+                    Humidity = $"{weather.Main.Humidity}%";
+                    TempRange = $"Min: {weather.Main.TempMin:F1}°C • Max: {weather.Main.TempMax:F1}°C";
+                    Description = $"{weather.Weather[0].Description}";
+                    Wind = $"Wind: {weather.Wind.Speed:F1} m/s";
+                    Pressure = $"Pressure: {weather.Main.Pressure} hPa";
+
+                    // Convert Unix timestamp to local time for sunrise/sunset
+                    var sunrise = DateTimeOffset.FromUnixTimeSeconds(weather.Sys.Sunrise).LocalDateTime;
+                    var sunset = DateTimeOffset.FromUnixTimeSeconds(weather.Sys.Sunset).LocalDateTime;
+                    SunTimes = $"🌅 {sunrise:HH:mm} • 🌇 {sunset:HH:mm}";
+                });
 
                 // Get Gemini Response
                 var geminiRequest = new GeminiRequest
@@ -166,6 +216,12 @@ namespace WeatherApp.ViewModels
                 await Dispatcher.UIThread.InvokeAsync(() =>
                     IsLoading = false);
             }
+        }
+
+        private DateTime UnixTimeToDateTime(long unixTime)
+        {
+            var dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTime);
+            return dateTimeOffset.DateTime;
         }
     }
 }

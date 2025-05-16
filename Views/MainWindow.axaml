@@ -60,9 +60,30 @@
                     <TextBlock Text="{Binding Temperature}"
                              FontSize="48"
                              HorizontalAlignment="Center"/>
-                    <TextBlock Text="{Binding Humidity}"
-                             FontSize="24"
+                    
+                    <TextBlock Text="{Binding TempRange}"
+                             FontSize="16"
                              HorizontalAlignment="Center"/>
+                             
+                    <TextBlock Text="{Binding Description}"
+                             FontSize="20"
+                             HorizontalAlignment="Center"/>
+                             
+                    <StackPanel Orientation="Horizontal" 
+                                Spacing="20"
+                                HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding Humidity}"
+                                 FontSize="16"/>
+                        <TextBlock Text="{Binding Pressure}"
+                                 FontSize="16"/>
+                        <TextBlock Text="{Binding Wind}"
+                                 FontSize="16"/>
+                    </StackPanel>
+                    
+                    <TextBlock Text="{Binding SunTimes}"
+                             FontSize="16"
+                             HorizontalAlignment="Center"
+                             Margin="0,10,0,0"/>
                 </StackPanel>
 
                 <!-- Separator -->
