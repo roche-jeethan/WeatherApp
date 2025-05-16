@@ -1,0 +1,63 @@
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# NuGet
+*.nupkg
+*.snupkg
+**/packages/*
+*.nuget.props
+*.nuget.targets
+
+# IDE specific files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sw?
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Avalonia specific
+*.manifest
+*.application
+*.exe
+*.dll
+
+# User-specific files
+*.swp
+*.*~
+project.lock.json
+.project
+.settings
+
+# Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
