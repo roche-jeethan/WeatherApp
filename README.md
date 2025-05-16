@@ -1,8 +1,9 @@
 # Weather App
 
 A cross-platform desktop weather application built with Avalonia UI and .NET. Get real-time weather information and AI-powered weather advice using OpenWeather API and Google's Gemini AI.
-
-![Weather App Screenshot](./Assets/screenshot.png)
+<p align="center">
+  <img src="./Assets/screenshot.png" alt="Weather App Screenshot">
+</p>
 
 ## Features
 
