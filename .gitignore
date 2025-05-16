@@ -45,6 +45,8 @@ _ReSharper*/
 .DS_Store
 Thumbs.db
 
+.env
+
 # Avalonia specific
 *.manifest
 *.application
