@@ -16,8 +16,8 @@
     </Window.Resources>
 
     <Grid RowDefinitions="Auto,*" Margin="20">
-        <!-- Search Bar and Refresh Button -->
-        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" Margin="0,0,0,20">
+        <!-- Search Bar (without Refresh Button) -->
+        <Grid Grid.Row="0" ColumnDefinitions="*" Margin="0,0,0,20">
             <TextBox Grid.Column="0"
                      Text="{Binding CityName}"
                      Watermark="Enter city name...">
@@ -26,12 +26,6 @@
                                Gesture="Enter"/>
                 </TextBox.KeyBindings>
             </TextBox>
-            <Button Grid.Column="1"
-                    Command="{Binding RefreshCommand}"
-                    IsEnabled="{Binding !IsLoading}"
-                    Margin="10,0,0,0">
-                🔄
-            </Button>
         </Grid>
 
         <!-- Weather Information -->
